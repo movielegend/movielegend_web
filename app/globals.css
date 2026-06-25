@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  font-family: 'Inter', sans-serif;
+  background-color: #050505;
+  color: #fff;
+  --bg: #050505;
+  --surface: rgba(255,255,255,0.06);
+  --surface-strong: rgba(5, 5, 5, 0.92);
+  --border: rgba(255,255,255,0.12);
+  --accent: #f5b334;
+  --accent-soft: rgba(245, 179, 52, 0.16);
+  --text-muted: #a5a5a5;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: #050505;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button,
+a {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(255,127,47,0.35);
+}
+
+.container {
+  max-width: 1200px;
+}
+
+section {
+  position: relative;
+}
+
+button {
+  cursor: pointer;
+}
+
+@layer utilities {
+  .text-shadow {
+    text-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+  }
+}
