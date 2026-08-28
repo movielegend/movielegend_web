@@ -6,24 +6,37 @@ import ProductManager from './ProductManager';
 export const dynamic = 'force-dynamic';
 
 export default async function AdminProductsPage() {
-  const products = await prisma.product.findMany({
-    where: { deletedAt: null },
-    include: {
-      category: true,
-      brand: true,
-      images: true
-    },
-    orderBy: { createdAt: 'desc' },
-  });
+  let productsList: any[] = [];
+  let categoriesList: any[] = [];
+  let brandsList: any[] = [];
 
-  const categories = await prisma.category.findMany({ where: { deletedAt: null } });
-  const brands = await prisma.brand.findMany({ where: { deletedAt: null } });
+  try {
+    productsList = await prisma.product.findMany({
+      where: { deletedAt: null },
+      include: {
+        category: true,
+        brand: true,
+        images: true
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+
+    categoriesList = await prisma.category.findMany({
+      where: { deletedAt: null }
+    });
+
+    brandsList = await prisma.brand.findMany({
+      where: { deletedAt: null }
+    });
+  } catch (err) {
+    console.error('Error fetching products:', err);
+  }
 
   return (
-    <ProductManager 
-      initialProducts={serializePrisma(products)} 
-      categories={serializePrisma(categories)} 
-      brands={serializePrisma(brands)} 
+    <ProductManager
+      initialProducts={serializePrisma(productsList)}
+      categories={serializePrisma(categoriesList)}
+      brands={serializePrisma(brandsList)}
     />
   );
 }

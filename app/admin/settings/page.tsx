@@ -5,10 +5,15 @@ import SettingManager from './SettingManager';
 
 export const dynamic = 'force-dynamic';
 
-export default async function SettingsPage() {
-  const settings = await prisma.setting.findMany({
-    where: { deletedAt: null }
-  });
+export default async function AdminSettingsPage() {
+  let settingsList: any[] = [];
+  try {
+    settingsList = await prisma.setting.findMany({
+      where: { deletedAt: null }
+    });
+  } catch (err) {
+    console.error('Error fetching settings:', err);
+  }
 
-  return <SettingManager initialSettings={serializePrisma(settings)} />;
+  return <SettingManager initialSettings={serializePrisma(settingsList)} />;
 }

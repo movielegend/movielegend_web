@@ -1,23 +1,39 @@
 import prisma from '@/lib/prisma';
 import AdminDashboardClient from './DashboardClient';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminDashboard() {
-  // Fetch real counts
-  const totalOrders = await prisma.order.count();
-  const totalCustomers = await prisma.customer.count();
-  const totalProducts = await prisma.product.count();
+  let totalOrders = 0;
+  let totalCustomers = 0;
+  let totalProducts = 0;
+  let totalRevenueNumber = 0;
+  let recentOrdersRaw: any[] = [];
 
-  // Aggregate total revenue (sum of totalAmount where status is COMPLETED)
-  const revenueResult = await prisma.order.aggregate({
-    _sum: {
-      totalAmount: true,
-    },
-    where: {
-      status: 'COMPLETED',
-    },
-  });
+  try {
+    totalOrders = await prisma.order.count();
+    totalCustomers = await prisma.customer.count();
+    totalProducts = await prisma.product.count();
 
-  const totalRevenueNumber = Number(revenueResult._sum.totalAmount || 0);
+    const revenueResult = await prisma.order.aggregate({
+      _sum: {
+        totalAmount: true,
+      },
+      where: {
+        status: 'COMPLETED',
+      },
+    });
+
+    totalRevenueNumber = Number(revenueResult._sum.totalAmount || 0);
+
+    recentOrdersRaw = await prisma.order.findMany({
+      take: 5,
+      orderBy: { createdAt: 'desc' },
+      include: { customer: true }
+    });
+  } catch (err) {
+    console.error('Error querying DB in AdminDashboard:', err);
+  }
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
@@ -36,19 +52,12 @@ export default async function AdminDashboard() {
     }
   };
 
-  // Fetch recent orders
-  const recentOrdersRaw = await prisma.order.findMany({
-    take: 5,
-    orderBy: { createdAt: 'desc' },
-    include: { customer: true }
-  });
-
   const recentOrdersData = recentOrdersRaw.map(order => ({
     id: `#ORD-${order.id.toString().padStart(3, '0')}`,
-    customer: order.customer.fullName,
-    email: order.customer.email || '',
-    date: formatDate(order.createdAt),
-    total: formatPrice(Number(order.totalAmount)),
+    customer: order.customer?.fullName || 'Khách hàng',
+    email: order.customer?.email || '',
+    date: order.createdAt ? formatDate(new Date(order.createdAt)) : '',
+    total: formatPrice(Number(order.totalAmount || 0)),
     status: formatStatus(order.status),
   }));
 

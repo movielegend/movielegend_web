@@ -6,10 +6,15 @@ import NewsManager from './NewsManager';
 export const dynamic = 'force-dynamic';
 
 export default async function AdminNewsPage() {
-  const newsList = await prisma.news.findMany({
-    where: { deletedAt: null },
-    orderBy: { createdAt: 'desc' }
-  });
+  let newsList: any[] = [];
+  try {
+    newsList = await prisma.news.findMany({
+      where: { deletedAt: null },
+      orderBy: { createdAt: 'desc' }
+    });
+  } catch (err) {
+    console.error('Error fetching news:', err);
+  }
 
   return <NewsManager initialNews={serializePrisma(newsList)} />;
 }

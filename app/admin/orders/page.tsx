@@ -6,17 +6,21 @@ import OrderManager from './OrderManager';
 export const dynamic = 'force-dynamic';
 
 export default async function AdminOrdersPage() {
-  const orders = await prisma.order.findMany({
-    where: { deletedAt: null },
-    include: {
-      customer: true,
-      orderItems: {
-        include: { product: true }
+  let ordersList: any[] = [];
+  try {
+    ordersList = await prisma.order.findMany({
+      where: { deletedAt: null },
+      include: {
+        customer: true,
+        orderItems: {
+          include: { product: true }
+        }
       },
-      payments: true
-    },
-    orderBy: { createdAt: 'desc' }
-  });
+      orderBy: { createdAt: 'desc' }
+    });
+  } catch (err) {
+    console.error('Error fetching orders:', err);
+  }
 
-  return <OrderManager initialOrders={serializePrisma(orders)} />;
+  return <OrderManager initialOrders={serializePrisma(ordersList)} />;
 }
