@@ -13,7 +13,16 @@ export default async function NewsPage() {
     orderBy: { createdAt: 'desc' }
   });
 
-  const news = serializePrisma(newsList);
+  const serializedList: any[] = serializePrisma(newsList);
+
+  const news = serializedList.map((item: any) => ({
+    ...item,
+    thumbnail: (item.thumbnail && typeof item.thumbnail === 'string' && item.thumbnail.trim() !== '') 
+      ? item.thumbnail 
+      : fallbackThumbnail,
+    summary: item.summary || item.content?.substring(0, 150) || 'Khám phá thông tin và công nghệ trình chiếu mới nhất từ Movie Legend.',
+    category: item.category || 'Tin Tức'
+  }));
 
   const featuredPost = news[0] || {
     id: 1,
@@ -24,10 +33,6 @@ export default async function NewsPage() {
     createdAt: new Date().toISOString(),
     thumbnail: fallbackThumbnail
   };
-
-  const featuredImgSrc = featuredPost.thumbnail && featuredPost.thumbnail.trim() !== '' 
-    ? featuredPost.thumbnail 
-    : fallbackThumbnail;
 
   return (
     <main className="min-h-screen bg-transparent text-slate-900 pt-24 pb-20 selection:bg-cyan-500 selection:text-white">
@@ -47,7 +52,7 @@ export default async function NewsPage() {
             <Link href={`/news/${featuredPost.slug}`} className="group block relative rounded-[2rem] overflow-hidden bg-white/70 backdrop-blur-2xl border border-slate-200/80 grid grid-cols-1 md:grid-cols-2 min-h-[400px] shadow-xl mb-16">
               <div className="relative h-64 md:h-full w-full">
                 <Image 
-                  src={featuredImgSrc} 
+                  src={featuredPost.thumbnail} 
                   alt={featuredPost.title || 'Tin tức'} 
                   fill 
                   className="object-cover group-hover:scale-105 transition-transform duration-700" 
@@ -63,32 +68,26 @@ export default async function NewsPage() {
           )}
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {news.slice(1).map((post: any) => {
-              const postImgSrc = post.thumbnail && post.thumbnail.trim() !== '' 
-                ? post.thumbnail 
-                : fallbackThumbnail;
-
-              return (
-                <Link href={`/news/${post.slug}`} key={post.id} className="group flex flex-col bg-white/60 backdrop-blur-xl rounded-3xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-xl transition-all">
-                  <div className="relative aspect-[4/3] rounded-t-3xl overflow-hidden bg-slate-100">
-                    <Image 
-                      src={postImgSrc} 
-                      alt={post.title || 'Tin tức'} 
-                      fill 
-                      className="object-cover group-hover:scale-105 transition-transform duration-500" 
-                    />
+            {news.slice(1).map((post: any) => (
+              <Link href={`/news/${post.slug}`} key={post.id} className="group flex flex-col bg-white/60 backdrop-blur-xl rounded-3xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-xl transition-all">
+                <div className="relative aspect-[4/3] rounded-t-3xl overflow-hidden bg-slate-100">
+                  <Image 
+                    src={post.thumbnail} 
+                    alt={post.title || 'Tin tức'} 
+                    fill 
+                    className="object-cover group-hover:scale-105 transition-transform duration-500" 
+                  />
+                </div>
+                <div className="p-6 flex-1 flex flex-col justify-between">
+                  <div>
+                    <span className="text-xs font-bold text-cyan-600 uppercase tracking-widest mb-2 block">{post.category}</span>
+                    <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-cyan-600 transition-colors line-clamp-2">{post.title}</h3>
+                    <p className="text-slate-600 text-xs line-clamp-2 mb-4 font-normal">{post.summary}</p>
                   </div>
-                  <div className="p-6 flex-1 flex flex-col justify-between">
-                    <div>
-                      <span className="text-xs font-bold text-cyan-600 uppercase tracking-widest mb-2 block">{post.category}</span>
-                      <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-cyan-600 transition-colors line-clamp-2">{post.title}</h3>
-                      <p className="text-slate-600 text-xs line-clamp-2 mb-4 font-normal">{post.summary}</p>
-                    </div>
-                    <span className="text-xs font-medium text-slate-400">{new Date(post.createdAt).toLocaleDateString('vi-VN')}</span>
-                  </div>
-                </Link>
-              );
-            })}
+                  <span className="text-xs font-medium text-slate-400">{new Date(post.createdAt).toLocaleDateString('vi-VN')}</span>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
