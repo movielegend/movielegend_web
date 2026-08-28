@@ -1,91 +1,55 @@
-﻿'use client';
-
+import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-black text-white pt-32 pb-24">
-      {/* Hero */}
-      <section className="container mx-auto px-6 max-w-5xl mb-24">
-        <div className="text-center mb-16">
-          <span className="text-movielegend-500 tracking-[0.3em] text-xs font-semibold uppercase">Về Chúng Tôi</span>
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight mt-4 mb-6">Movie Legend - Chuyên Gia Máy Chiếu</h1>
-          <p className="text-gray-400 text-lg leading-relaxed">
-            Với hơn 15 năm kinh nghiệm trong lĩnh vực công nghệ hiển thị, Movie Legend là đối tác tin cậy của hàng nghìn khách hàng tại Việt Nam.
+    <main className="min-h-screen bg-transparent text-slate-900 pt-32 pb-24 selection:bg-sky-500 selection:text-white">
+      <div className="container mx-auto px-6 max-w-7xl">
+        {/* Hero */}
+        <div className="text-center max-w-4xl mx-auto mb-20">
+          <span className="text-sky-600 tracking-[0.3em] text-xs font-bold uppercase mb-4 block">Về Movie Legend</span>
+          <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-6 text-slate-900">Mang Trải Nghiệm Rạp Phim Về Ngôi Nhà Bạn</h1>
+          <p className="text-slate-600 text-lg md:text-xl font-normal leading-relaxed">
+            Movie Legend là đơn vị đi đầu trong việc cung cấp các thiết bị máy chiếu thông minh 4K, hệ thống âm thanh cao cấp và giải pháp rạp chiếu phim gia đình trọn gói tại Việt Nam.
           </p>
         </div>
-      </section>
 
-      {/* Story */}
-      <section className="container mx-auto px-6 max-w-5xl mb-24">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div>
-            <h2 className="text-3xl font-bold mb-6">Khởi Đầu & Phát Triển</h2>
-            <p className="text-gray-400 mb-4 leading-relaxed">
-              Movie Legend được thành lập năm 2008 với sứ mệnh mang công nghệ hiển thị tốt nhất đến cho mọi gia đình và doanh nghiệp Việt Nam.
-            </p>
-            <p className="text-gray-400 mb-4 leading-relaxed">
-              Chúng tôi không chỉ cung cấp máy chiếu, mà còn mang đến những trải nghiệm hình ảnh vô cùng sắc nét và tinh tế, biến mọi không gian thành một rạp chiếu phim cao cấp.
-            </p>
-            <p className="text-gray-400 leading-relaxed">
-              Đến nay, chúng tôi đã phục vụ hơn 10,000 khách hàng hài lòng trên khắp đất nước.
-            </p>
+        {/* Story Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-24">
+          <div className="relative aspect-video lg:aspect-square rounded-[2.5rem] overflow-hidden shadow-xl border border-slate-200/80">
+            <Image 
+              src="https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?auto=format&fit=crop&w=1200&q=80"
+              alt="Movie Legend Story"
+              fill
+              className="object-cover"
+            />
           </div>
-          <div className="bg-[#0a0a0a] rounded-2xl border border-white/5 p-8">
-            <h3 className="text-2xl font-bold mb-6">Những Con Số</h3>
-            <div className="space-y-4">
-              <div className="flex items-center gap-4">
-                <div className="text-3xl font-bold text-movielegend-500">15+</div>
-                <div className="text-sm text-gray-400">Năm kinh nghiệm</div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="text-3xl font-bold text-movielegend-500">10K+</div>
-                <div className="text-sm text-gray-400">Khách hàng hài lòng</div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="text-3xl font-bold text-movielegend-500">50+</div>
-                <div className="text-sm text-gray-400">Loại sản phẩm</div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="text-3xl font-bold text-movielegend-500">24/7</div>
-                <div className="text-sm text-gray-400">Hỗ trợ khách hàng</div>
-              </div>
-            </div>
+          <div className="space-y-6">
+            <h2 className="text-3xl md:text-4xl font-black tracking-tight text-slate-900">Sứ Mệnh Của Chúng Tôi</h2>
+            <p className="text-slate-600 leading-relaxed font-normal">
+              Chúng tôi tin rằng giải trí tại gia không chỉ là việc xem một bộ phim, mà là khoảnh khắc kết nối cảm xúc giữa gia đình và bạn bè.
+            </p>
+            <p className="text-slate-600 leading-relaxed font-normal">
+              Với sứ mệnh đó, Movie Legend không ngừng mang về những công nghệ trình chiếu đột phá nhất như Dual Light Laser, độ phân giải 4K Dolby Vision, cùng âm thanh Harman Kardon đỉnh cao.
+            </p>
           </div>
         </div>
-      </section>
 
-      {/* Values */}
-      <section className="container mx-auto px-6 max-w-5xl mb-24">
-        <h2 className="text-3xl font-bold mb-12 text-center">Giá Trị Cốt Lõi</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* Stats */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-24">
           {[
-            { title: 'Chất Lượng Hàng Đầu', desc: 'Chỉ cung cấp sản phẩm từ các thương hiệu uy tín nhất thế giới.' },
-            { title: 'Tư Vấn Chuyên Nghiệp', desc: 'Đội ngũ chuyên gia luôn sẵn sàng giúp bạn chọn sản phẩm phù hợp.' },
-            { title: 'Dịch Vụ Xuất Sắc', desc: 'Hỗ trợ trước, trong và sau bán hàng với chất lượng tuyệt vời.' }
-          ].map((value, i) => (
-            <div key={i} className="bg-[#0a0a0a] rounded-xl border border-white/5 p-6">
-              <h3 className="text-lg font-bold mb-3">{value.title}</h3>
-              <p className="text-gray-400 text-sm">{value.desc}</p>
+            { value: '10.000+', label: 'Khách hàng tin tưởng' },
+            { value: '100%', label: 'Sản phẩm chính hãng' },
+            { value: '24/7', label: 'Hỗ trợ kỹ thuật' },
+            { value: '5★', label: 'Đánh giá hài lòng' }
+          ].map((stat, i) => (
+            <div key={i} className="bg-white/70 backdrop-blur-2xl rounded-3xl border border-slate-200/80 p-8 text-center shadow-lg">
+              <div className="text-3xl md:text-5xl font-black text-sky-600 mb-2">{stat.value}</div>
+              <div className="text-sm text-slate-600 font-medium">{stat.label}</div>
             </div>
           ))}
         </div>
-      </section>
-
-      {/* CTA */}
-      <section className="container mx-auto px-6 max-w-5xl text-center">
-        <h2 className="text-3xl font-bold mb-6">Hãy Liên Hệ Với Chúng Tôi</h2>
-        <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
-          Nếu bạn có bất kỳ câu hỏi nào hoặc muốn tìm hiểu thêm về các sản phẩm của chúng tôi, đừng ngần ngại liên hệ.
-        </p>
-        <Link href="/contact">
-          <Button className="gap-2">
-            Liên Hệ Ngay <ArrowRight className="w-4 h-4" />
-          </Button>
-        </Link>
-      </section>
+      </div>
     </main>
   );
 }

@@ -3,27 +3,29 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
   font-family: 'Inter', sans-serif;
-  background-color: #050505;
-  color: #fff;
-  --bg: #050505;
-  --surface: rgba(255,255,255,0.06);
-  --surface-strong: rgba(5, 5, 5, 0.92);
-  --border: rgba(255,255,255,0.12);
-  --accent: #f5b334;
-  --accent-soft: rgba(245, 179, 52, 0.16);
-  --text-muted: #a5a5a5;
+  background-color: #faf8f2;
+  color: #0f172a;
+  --bg: #faf8f2;
+  --surface: rgba(255,255,255,0.8);
+  --surface-strong: #ffffff;
+  --border: rgba(15, 23, 42, 0.12);
+  --accent: #06b6d4;
+  --accent-soft: rgba(6, 182, 212, 0.12);
+  --text-muted: #64748b;
 }
 
 html {
   scroll-behavior: smooth;
 }
 
+/* Arctic Frost - Aura (Light Theme Base) */
 body {
   margin: 0;
   min-height: 100vh;
-  background-color: #050505;
+  background-color: #faf8f2;
+  color: #0f172a;
 }
 
 * {
@@ -36,7 +38,8 @@ a {
 }
 
 ::selection {
-  background: rgba(255,127,47,0.35);
+  background: rgba(6, 182, 212, 0.25);
+  color: #0f172a;
 }
 
 .container {
@@ -51,8 +54,81 @@ button {
   cursor: pointer;
 }
 
+/* Arctic Frost - Aura Component Styles */
+.aura-bg {
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  /* NO background-color - layers blend against body */
+}
+
+/* Layer 1 - normal: 100% seamless transition starting smoothly from body bg #faf8f2 */
+.aura-layer-1 {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #faf8f2 0%, rgba(207,250,254,0.9) 20%, rgba(165,243,252,0.4) 55%, rgba(34,211,238,0.3) 100%);
+  mix-blend-mode: normal;
+  transform: translateZ(0);
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* Layer 2 - multiply */
+.aura-layer-2 {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 30%, rgba(6,182,212,0.5) 0%, transparent 40%);
+  mix-blend-mode: multiply;
+  filter: blur(125px);
+  transform: translateZ(0);
+  will-change: transform;
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .aura-layer-2 {
+    filter: blur(180px);
+  }
+}
+
+/* Layer 3 - multiply */
+.aura-layer-3 {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 70% 70%, rgba(14,165,233,0.4) 0%, transparent 35%);
+  mix-blend-mode: multiply;
+  filter: blur(150px);
+  transform: translateZ(0);
+  will-change: transform;
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .aura-layer-3 {
+    filter: blur(216px);
+  }
+}
+
+/* Layer 4 - multiply */
+.aura-layer-4 {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(45deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.4) 100%);
+  mix-blend-mode: multiply;
+  filter: blur(50px);
+  transform: translateZ(0);
+  will-change: transform;
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .aura-layer-4 {
+    filter: blur(72px);
+  }
+}
+
 @layer utilities {
   .text-shadow {
-    text-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+    text-shadow: 0 24px 80px rgba(0, 0, 0, 0.15);
   }
 }

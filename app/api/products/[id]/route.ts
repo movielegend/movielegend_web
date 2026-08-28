@@ -7,11 +7,32 @@ export async function GET(
 ) {
   try {
     const resolvedParams = await params;
-    const data = await prisma.product.findUnique({ where: { id: Number(resolvedParams.id) } });
-    if (!data) return NextResponse.json({ error: 'Not found' }, { status: 404 });
-    return NextResponse.json(data);
+    const identifier = resolvedParams.id;
+    const isIdNumeric = !isNaN(Number(identifier));
+
+    const product = await prisma.product.findFirst({
+      where: isIdNumeric ? { id: Number(identifier) } : { slug: identifier },
+      include: {
+        category: true,
+        brand: true,
+        images: true,
+        specifications: true,
+        reviews: {
+          include: { customer: true },
+          take: 10
+        },
+        seo: true
+      }
+    });
+
+    if (!product) {
+      return NextResponse.json({ error: 'Sản phẩm không tồn tại' }, { status: 404 });
+    }
+
+    return NextResponse.json(product);
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch product' }, { status: 500 });
+    console.error('Fetch product detail error:', error);
+    return NextResponse.json({ error: 'Lỗi lấy thông tin sản phẩm' }, { status: 500 });
   }
 }
 
@@ -21,14 +42,38 @@ export async function PUT(
 ) {
   try {
     const resolvedParams = await params;
+    const productId = Number(resolvedParams.id);
     const body = await request.json();
-    const data = await prisma.product.update({
-      where: { id: Number(resolvedParams.id) },
-      data: body,
+
+    const { name, slug, sku, price, originalPrice, stockQuantity, categoryId, brandId, description, shortDesc, isFeatured, isAvailable } = body;
+
+    const updatedProduct = await prisma.product.update({
+      where: { id: productId },
+      data: {
+        name,
+        slug,
+        sku,
+        price: price ? parseFloat(price) : undefined,
+        originalPrice: originalPrice ? parseFloat(originalPrice) : null,
+        stockQuantity: stockQuantity !== undefined ? parseInt(stockQuantity, 10) : undefined,
+        description,
+        shortDesc,
+        isFeatured: isFeatured !== undefined ? Boolean(isFeatured) : undefined,
+        isAvailable: isAvailable !== undefined ? Boolean(isAvailable) : undefined,
+        categoryId: categoryId ? parseInt(categoryId, 10) : undefined,
+        brandId: brandId ? parseInt(brandId, 10) : undefined,
+      },
+      include: {
+        category: true,
+        brand: true,
+        images: true,
+      }
     });
-    return NextResponse.json(data);
+
+    return NextResponse.json(updatedProduct);
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to update product' }, { status: 500 });
+    console.error('Update product error:', error);
+    return NextResponse.json({ error: 'Cập nhật sản phẩm thất bại' }, { status: 500 });
   }
 }
 
@@ -38,9 +83,16 @@ export async function DELETE(
 ) {
   try {
     const resolvedParams = await params;
-    await prisma.product.delete({ where: { id: Number(resolvedParams.id) } });
-    return NextResponse.json({ success: true });
+    const productId = Number(resolvedParams.id);
+
+    await prisma.product.update({
+      where: { id: productId },
+      data: { deletedAt: new Date() }
+    });
+
+    return NextResponse.json({ success: true, message: 'Đã xóa sản phẩm' });
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to delete product' }, { status: 500 });
+    console.error('Delete product error:', error);
+    return NextResponse.json({ error: 'Xóa sản phẩm thất bại' }, { status: 500 });
   }
 }

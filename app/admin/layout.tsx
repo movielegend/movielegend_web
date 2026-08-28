@@ -96,7 +96,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
 
         <div className="p-4 border-t border-white/[0.05] shrink-0">
-          <button className={`flex items-center gap-3 px-3 py-2.5 rounded-xl w-full text-left text-gray-400 hover:text-rose-400 hover:bg-rose-500/10 transition-all duration-300 border border-transparent hover:border-rose-500/10 ${isCollapsed ? 'justify-center' : ''}`} title={isCollapsed ? "Đăng xuất" : undefined}>
+          <button 
+            onClick={async () => {
+              await fetch('/api/auth/logout', { method: 'POST' });
+              window.location.href = '/login';
+            }}
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-xl w-full text-left text-gray-400 hover:text-rose-400 hover:bg-rose-500/10 transition-all duration-300 border border-transparent hover:border-rose-500/10 ${isCollapsed ? 'justify-center' : ''}`} 
+            title={isCollapsed ? "Đăng xuất" : undefined}
+          >
             <LogOut className="w-5 h-5" />
             {!isCollapsed && <span className="font-medium">Đăng xuất</span>}
           </button>

@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import Link from 'next/link';
 import { ChevronDown, Mail, Phone, MapPin, Clock } from 'lucide-react';
@@ -40,40 +40,40 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
   return (
     <button 
       onClick={() => setOpen(!open)}
-      className="w-full text-left bg-[#0a0a0a] border border-white/5 rounded-xl p-6 hover:border-movielegend-500/30 transition-colors"
+      className="w-full text-left bg-white/70 backdrop-blur-xl border border-slate-200/80 rounded-2xl p-6 hover:border-cyan-500/50 transition-all shadow-sm"
     >
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-white">{question}</h3>
-        <ChevronDown className={`w-5 h-5 text-movielegend-500 transition-transform ${open ? 'rotate-180' : ''}`} />
+        <h3 className="font-bold text-slate-900 text-lg">{question}</h3>
+        <ChevronDown className={`w-5 h-5 text-cyan-600 transition-transform ${open ? 'rotate-180' : ''}`} />
       </div>
-      {open && <p className="text-gray-400 text-sm mt-4">{answer}</p>}
+      {open && <p className="text-slate-600 text-base mt-4 font-normal leading-relaxed">{answer}</p>}
     </button>
   );
 }
 
 export default function SupportPage() {
   return (
-    <main className="min-h-screen bg-black text-white pt-32 pb-24">
+    <main className="min-h-screen bg-transparent text-slate-900 pt-32 pb-24 selection:bg-cyan-500 selection:text-white">
       {/* Hero */}
-      <section className="container mx-auto px-6 max-w-5xl mb-24">
+      <section className="container mx-auto px-6 max-w-5xl mb-20">
         <div className="text-center mb-12">
-          <span className="text-movielegend-500 tracking-[0.3em] text-xs font-semibold uppercase">Hỗ Trợ Khách Hàng</span>
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight mt-4 mb-6">Chúng Tôi Ở Đây Để Giúp Bạn</h1>
-          <p className="text-gray-400 text-lg">Liên hệ với chúng tôi bất cứ lúc nào, chúng tôi sẵn sàng hỗ trợ 24/7</p>
+          <span className="text-cyan-600 tracking-[0.3em] text-xs font-bold uppercase mb-4 block">Hỗ Trợ Khách Hàng</span>
+          <h1 className="text-4xl md:text-5xl font-black tracking-tight mt-4 mb-6 text-slate-900">Chúng Tôi Ở Đây Để Giúp Bạn</h1>
+          <p className="text-slate-600 text-lg font-normal max-w-2xl mx-auto">Liên hệ với chúng tôi bất cứ lúc nào, chúng tôi sẵn sàng hỗ trợ 24/7</p>
         </div>
       </section>
 
       {/* Contact Options */}
-      <section className="container mx-auto px-6 max-w-5xl mb-24">
+      <section className="container mx-auto px-6 max-w-5xl mb-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {contactOptions.map((option, i) => {
             const Icon = option.icon;
             return (
-              <div key={i} className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6 text-center hover:border-movielegend-500/30 transition-colors">
-                <Icon className="w-8 h-8 text-movielegend-500 mx-auto mb-3" />
-                <p className="text-gray-400 text-sm mb-2">{option.label}</p>
-                <p className="font-semibold text-white mb-1">{option.value}</p>
-                <p className="text-xs text-gray-500">{option.detail}</p>
+              <div key={i} className="bg-white/70 backdrop-blur-2xl border border-slate-200/80 rounded-2xl p-6 text-center shadow-lg hover:shadow-xl transition-all">
+                <Icon className="w-8 h-8 text-cyan-600 mx-auto mb-3" />
+                <p className="text-slate-500 text-xs font-bold uppercase mb-1">{option.label}</p>
+                <p className="font-bold text-slate-900 mb-1">{option.value}</p>
+                <p className="text-xs text-slate-500">{option.detail}</p>
               </div>
             );
           })}
@@ -81,8 +81,8 @@ export default function SupportPage() {
       </section>
 
       {/* FAQs */}
-      <section className="container mx-auto px-6 max-w-5xl mb-24">
-        <h2 className="text-3xl font-bold mb-12 text-center">Câu Hỏi Thường Gặp</h2>
+      <section className="container mx-auto px-6 max-w-5xl mb-20">
+        <h2 className="text-3xl font-black mb-12 text-center text-slate-900">Câu Hỏi Thường Gặp</h2>
         <div className="space-y-4">
           {faqs.map((faq, i) => (
             <FAQItem key={i} question={faq.question} answer={faq.answer} />
@@ -91,11 +91,11 @@ export default function SupportPage() {
       </section>
 
       {/* CTA */}
-      <section className="container mx-auto px-6 max-w-5xl bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 md:p-12 text-center">
-        <h2 className="text-3xl font-bold mb-4">Không Tìm Thấy Câu Trả Lời?</h2>
-        <p className="text-gray-400 mb-8">Hãy liên hệ trực tiếp với đội support của chúng tôi</p>
+      <section className="container mx-auto px-6 max-w-5xl bg-white/70 backdrop-blur-2xl border border-slate-200/80 rounded-[2.5rem] p-8 md:p-12 text-center shadow-xl">
+        <h2 className="text-3xl font-black mb-4 text-slate-900">Không Tìm Thấy Câu Trả Lời?</h2>
+        <p className="text-slate-600 mb-8 max-w-xl mx-auto font-normal text-lg">Hãy liên hệ trực tiếp với đội ngũ hỗ trợ kỹ thuật của chúng tôi</p>
         <Link href="/contact">
-          <Button>Liên Hệ Support</Button>
+          <Button className="rounded-full px-8 py-6 bg-cyan-600 text-white font-bold hover:bg-cyan-500 shadow-lg shadow-cyan-600/25">Liên Hệ Support Ngay</Button>
         </Link>
       </section>
     </main>
