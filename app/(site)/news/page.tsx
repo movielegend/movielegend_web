@@ -7,15 +7,54 @@ export const dynamic = 'force-dynamic';
 
 const fallbackThumbnail = 'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?auto=format&fit=crop&w=1200&q=80';
 
+const fallbackNewsList = [
+  {
+    id: 1,
+    title: 'Top 5 Máy Chiếu 4K Đáng Mua Nhất Cho Rạp Hát Tại Gia 2026',
+    slug: 'top-5-may-chieu-4k-2026',
+    summary: 'Khám phá các dòng máy chiếu 4K laser cao cấp mang đến hình ảnh sống động và trải nghiệm rạp phim chân thực ngay tại nhà.',
+    category: 'Đánh giá',
+    createdAt: new Date().toISOString(),
+    thumbnail: fallbackThumbnail
+  },
+  {
+    id: 2,
+    title: 'Hướng Dẫn Chọn Màn Chiếu ALR Phù Hợp Cho Không Gian Phòng Khách',
+    slug: 'huong-dan-chon-man-chieu',
+    summary: 'Bí quyết lựa chọn kích thước màn chiếu và chất liệu cản ánh sáng môi trường (ALR) để có trải nghiệm xem phim hoàn hảo.',
+    category: 'Tư vấn',
+    createdAt: new Date().toISOString(),
+    thumbnail: 'https://images.unsplash.com/photo-1595769816263-9b910be24d5f?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    id: 3,
+    title: 'Giải Pháp Hệ Thống Âm Thanh Dolby Atmos Cho Máy Chiếu Thông Minh',
+    slug: 'giai-phap-am-thanh-dolby-atmos',
+    summary: 'Tối ưu hóa âm thanh vòm 3D sống động kết hợp với công nghệ chiếu laser 4K đỉnh cao.',
+    category: 'Công nghệ',
+    createdAt: new Date().toISOString(),
+    thumbnail: 'https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=800&q=80'
+  }
+];
+
 export default async function NewsPage() {
-  const newsList = await prisma.news.findMany({
-    where: { deletedAt: null },
-    orderBy: { createdAt: 'desc' }
-  });
+  let newsList: any[] = [];
 
-  const serializedList: any[] = serializePrisma(newsList);
+  try {
+    const rawList = await prisma.news.findMany({
+      where: { deletedAt: null },
+      orderBy: { createdAt: 'desc' }
+    });
+    if (rawList && rawList.length > 0) {
+      newsList = serializePrisma(rawList);
+    }
+  } catch (err) {
+    console.error('Failed to load news from DB, using fallback:', err);
+  }
 
-  const news = serializedList.map((item: any) => ({
+  const newsData = newsList.length > 0 ? newsList : fallbackNewsList;
+
+  const news = newsData.map((item: any) => ({
     ...item,
     thumbnail: (item.thumbnail && typeof item.thumbnail === 'string' && item.thumbnail.trim() !== '') 
       ? item.thumbnail 
@@ -24,15 +63,7 @@ export default async function NewsPage() {
     category: item.category || 'Tin Tức'
   }));
 
-  const featuredPost = news[0] || {
-    id: 1,
-    title: 'Top 5 Máy Chiếu 4K Đáng Mua Nhất Cho Rạp Hát Tại Gia 2026',
-    slug: 'top-5-may-chieu-4k-2026',
-    summary: 'Khám phá các dòng máy chiếu 4K laser cao cấp mang đến hình ảnh sống động và trải nghiệm rạp phim chân thực ngay tại nhà.',
-    category: 'Đánh giá',
-    createdAt: new Date().toISOString(),
-    thumbnail: fallbackThumbnail
-  };
+  const featuredPost = news[0] || fallbackNewsList[0];
 
   return (
     <main className="min-h-screen bg-transparent text-slate-900 pt-24 pb-20 selection:bg-cyan-500 selection:text-white">
