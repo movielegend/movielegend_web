@@ -2,11 +2,20 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
 import { ArrowRight, ChevronRight } from 'lucide-react';
 import { products } from '@/lib/products';
 import { Button } from '@/components/ui/button';
-import Hero3DModel from '@/components/ui/hero-3d-model';
+
+const Hero3DModel = dynamic(() => import('@/components/ui/hero-3d-model'), {
+  ssr: false,
+  loading: () => (
+    <div className="h-[360px] md:h-[460px] w-full flex items-center justify-center text-slate-400 font-medium">
+      Đang tải mô hình 3D...
+    </div>
+  ),
+});
 
 export default function HomePage() {
   return (
