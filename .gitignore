@@ -13,6 +13,10 @@ out/
 dist/
 build/
 
+# 3D CAD Large Files (>100MB)
+*.stp
+*.step
+
 # TypeScript
 *.tsbuildinfo
 
