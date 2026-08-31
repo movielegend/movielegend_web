@@ -6,15 +6,15 @@ import { motion } from 'framer-motion';
 import { ArrowRight, ChevronRight } from 'lucide-react';
 import { products } from '@/lib/products';
 import { Button } from '@/components/ui/button';
-import Product3DViewer from '@/components/ui/product-3d-viewer';
+import Hero3DModel from '@/components/ui/hero-3d-model';
 
 export default function HomePage() {
   return (
     <div className="bg-transparent text-slate-900 selection:bg-sky-500 selection:text-white">
       {/* Hero Section */}
-      <section className="relative h-screen w-full overflow-hidden flex items-center justify-center">
+      <section className="relative min-h-screen w-full overflow-hidden flex items-center justify-center pt-24 pb-16">
         <video
-          className="absolute inset-0 w-full h-full object-cover opacity-30"
+          className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none"
           autoPlay
           muted
           loop
@@ -24,28 +24,33 @@ export default function HomePage() {
           <source src="https://assets.mixkit.co/videos/preview/mixkit-home-cinema-room-with-projection-584-large.mp4" type="video/mp4" />
         </video>
         
-        <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-transparent" />
-
-        <div className="relative z-10 flex flex-col items-center text-center mt-20 px-6">
+        <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-5xl mx-auto w-full">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            className="w-full"
           >
-            <h2 className="text-sm md:text-base font-bold tracking-[0.3em] text-teal-600 mb-4 uppercase">
+            <h2 className="text-xs md:text-sm font-bold tracking-[0.3em] text-teal-600 mb-3 uppercase">
               Kỷ Nguyên Mới Của Rạp Hát Tại Gia
             </h2>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-6 text-slate-900">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-4 text-slate-900">
               HORIZON <span className="font-light text-teal-600">Ultra</span>
             </h1>
-            <p className="text-lg md:text-xl text-slate-700 max-w-2xl mx-auto font-normal mb-10">
+            <p className="text-base md:text-lg text-slate-700 max-w-2xl mx-auto font-normal mb-2">
               Trải nghiệm True 4K với Dolby Vision. Đỉnh cao của độ chân thực hình ảnh và âm thanh sống động.
             </p>
-            <div className="flex items-center gap-4 justify-center">
-              <Button size="lg" className="rounded-full px-8 py-6 text-base font-bold bg-teal-600 hover:bg-teal-500 text-white shadow-lg shadow-teal-600/25">Mua Ngay</Button>
-              <Link href="#3d-experience">
-                <Button size="lg" variant="outline" className="rounded-full px-8 py-6 text-base font-bold border-slate-300 hover:bg-slate-900 hover:text-white text-slate-900">
-                  Xem Bản Vẽ 3D CAD <ChevronRight className="ml-1 w-4 h-4" />
+
+            {/* Seamless Auto-Rotating 3D Model Display */}
+            <Hero3DModel />
+
+            <div className="flex items-center gap-4 justify-center mt-2">
+              <Button size="lg" className="rounded-full px-8 py-6 text-base font-bold bg-teal-600 hover:bg-teal-500 text-white shadow-lg shadow-teal-600/25">
+                Mua Ngay
+              </Button>
+              <Link href="/products">
+                <Button size="lg" variant="outline" className="rounded-full px-8 py-6 text-base font-bold border-slate-300 hover:bg-slate-900 hover:text-white text-slate-900 bg-white/70 backdrop-blur-md">
+                  Khám Phá Sản Phẩm <ChevronRight className="ml-1 w-4 h-4" />
                 </Button>
               </Link>
             </div>
@@ -77,11 +82,6 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-      </section>
-
-      {/* 3D CAD Product Experience Section */}
-      <section id="3d-experience" className="py-12 bg-transparent container mx-auto px-6">
-        <Product3DViewer />
       </section>
 
       {/* Bestsellers Grid */}
